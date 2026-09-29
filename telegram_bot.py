@@ -204,19 +204,6 @@ class AccessControlMiddleware(BaseMiddleware):
         user_id = user.id
         allowed = get_allowed_users()
 
-        # If whitelist is empty, automatically claim first user as Owner/Admin
-        if not allowed:
-            save_allowed_user(user_id)
-            print(f"👑 Назначен единственный владелец бота: ID {user_id} (@{user.username or user.first_name})", flush=True)
-            if isinstance(event, types.Message):
-                await event.answer(
-                    f"👑 **Вы успешно авторизованы как единственный владелец бота!**\n\n"
-                    f"• Ваш Telegram ID: `{user_id}`\n"
-                    f"• Бот наглухо закрыт и доступен исключительно вам.",
-                    parse_mode="Markdown"
-                )
-            return await handler(event, data)
-
         if user_id not in allowed:
             if isinstance(event, types.CallbackQuery):
                 await event.answer("⛔ Доступ ограничен. Этот бот является персональным.", show_alert=True)
