@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Кино-Редактор Субтитров</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@700&display=swap" rel="stylesheet">
+</head>
+<body class="theme-dark">
+  <div id="app">
+    <!-- Top Header -->
+    <header class="top-nav">
+      <div class="nav-left">
+        <button id="btnSwitchClip" class="icon-btn" title="Список роликов">📁</button>
+        <div class="header-titles">
+          <h1 id="clipTitle" class="clip-title">Загрузка ролика...</h1>
+          <div id="clipMeta" class="clip-meta">🍿 Фильм: — | Код: —</div>
+        </div>
+      </div>
+      <div class="nav-right">
+        <button id="btnReload" class="icon-btn" title="Сбросить изменения">🔄</button>
+      </div>
+    </header>
+
+    <!-- Video Preview Section (Sticky) -->
+    <section class="video-section">
+      <div class="video-container" id="videoBox">
+        <video id="videoPlayer" playsinline webkit-playsinline preload="metadata">
+          Ваш браузер не поддерживает воспроизведение видео.
+        </video>
+        
+        <!-- Live Subtitle Overlay matching Final Render Style -->
+        <div id="subOverlay" class="subtitle-overlay">
+          <div id="subText" class="subtitle-text"></div>
+        </div>
+
+        <!-- Touch overlay to toggle play/pause -->
+        <div id="videoTapTarget" class="video-tap-target">
+          <div id="playIndicator" class="play-indicator">▶</div>
+        </div>
+      </div>
+
+      <!-- Player Controls -->
+      <div class="player-controls">
+        <button id="btnPlayPause" class="ctrl-btn play-btn">▶</button>
+        <span id="timeCurrent" class="time-display">00:00.0</span>
+        <input type="range" id="seekSlider" class="seek-slider" min="0" max="100" step="0.05" value="0">
+        <span id="timeTotal" class="time-display">00:00.0</span>
+        <button id="btnSpeed" class="ctrl-btn speed-btn">1x</button>
+      </div>
+    </section>
+
+    <!-- Global Timing Shift Bar -->
+    <section class="global-shift-section">
+      <div class="section-title-row">
+        <span class="section-badge">⚡ Общий сдвиг звука</span>
+        <span id="globalShiftValue" class="shift-badge">+0.00с</span>
+      </div>
+      <div class="shift-buttons-row">
+        <button class="shift-btn" data-shift="-0.5">-0.5с</button>
+        <button class="shift-btn" data-shift="-0.2">-0.2с</button>
+        <button class="shift-btn" data-shift="-0.1">-0.1с</button>
+        <button id="btnResetShift" class="shift-btn reset-btn">0.0с</button>
+        <button class="shift-btn" data-shift="+0.1">+0.1с</button>
+        <button class="shift-btn" data-shift="+0.2">+0.2с</button>
+        <button class="shift-btn" data-shift="+0.5">+0.5с</button>
+      </div>
+    </section>
+
+    <!-- Quick Word Replacement Tool -->
+    <section class="quick-replace-section">
+      <details id="replaceDetails">
+        <summary class="replace-summary">🔤 Заменить слово во всех репликах</summary>
+        <div class="replace-form">
+          <div class="replace-inputs">
+            <input type="text" id="inputOldWord" placeholder="Что заменить (напр. босса)">
+            <span class="arrow-sep">➔</span>
+            <input type="text" id="inputNewWord" placeholder="На что (напр. босс)">
+          </div>
+          <button id="btnApplyWordReplace" class="btn-action">Заменить везде</button>
+        </div>
+      </details>
+    </section>
+
+    <!-- Cues Cards List -->
+    <section class="cues-section">
+      <div class="cues-header">
+        <h2 class="cues-heading">💬 Реплики диалога (<span id="cuesCount">0</span>)</h2>
+        <span class="hint-tap">Тап по реплике перематывает видео</span>
+      </div>
+
+      <div id="cuesList" class="cues-list">
+        <!-- Rendered dynamically by app.js -->
+        <div class="skeleton-card">Загрузка субтитров...</div>
+      </div>
+    </section>
+
+    <!-- Bottom Floating Save Bar -->
+    <footer class="bottom-bar">
+      <div class="save-status">
+        <span id="statusIndicator" class="status-dot"></span>
+        <span id="statusText">Без изменений</span>
+      </div>
+      <button id="btnSaveRender" class="btn-save" disabled>
+        💾 Сохранить и собрать видео
+      </button>
+    </footer>
+
+    <!-- Clips Switcher Modal / Drawer -->
+    <div id="clipsModal" class="modal-backdrop hidden">
+      <div class="modal-drawer">
+        <div class="drawer-header">
+          <h3>📁 Выбор ролика</h3>
+          <button id="btnCloseModal" class="icon-btn">✕</button>
+        </div>
+        <div id="clipsList" class="clips-list">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading / Processing Modal Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+      <div class="loading-card">
+        <div class="spinner"></div>
+        <h3 id="loadingTitle">Сборка ролика...</h3>
+        <p id="loadingMsg">Применяем правки субтитров и пересобираем вертикальное видео FFmpeg...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+{
+  "watermark": "@your_channel",
+  "output_dir": "output",
+  "temp_dir": "temp",
+  "use_hardware_accel": true,
+  "normalize_audio": true,
+  "subtitles": {
+    "font_name": "Impact",
+    "font_size": 52,
+    "animation_style": "word_highlight_bounce",
+    "active_word_color": "&H0000E6FF",
+    "inactive_word_color": "&H00FFFFFF",
+    "outline_color": "&H00000000",
+    "shadow_color": "&H80000000",
+    "min_speech_ratio": 0.2,
+    "min_words_count": 8,
+    "margin_v": 720,
+    "model_size": "large-v3-turbo"
+  },
+  "llm": {
+    "enabled": false,
+    "provider": "gemini",
+    "api_key": "YOUR_GEMINI_API_KEY",
+    "model": "gemini-3.5-flash-lite"
+  },
+  "platforms": {
+    "shorts": {
+      "enabled": true,
+      "sponsor": "YOUR_SPONSOR",
+      "cta_text": "YOUR_CALL_TO_ACTION",
+      "promo_text": "YOUR_PROMO_TEXT",
+      "promo_link": "https://example.com",
+      "hashtags": []
+    },
+    "tiktok": {
+      "enabled": true,
+      "sponsor": "YOUR_SPONSOR",
+      "cta_text": "YOUR_CALL_TO_ACTION",
+      "promo_text": "YOUR_PROMO_TEXT",
+      "promo_link": "https://example.com",
+      "hashtags": []
+    },
+    "reels": {
+      "enabled": true,
+      "sponsor": "YOUR_SPONSOR",
+      "cta_text": "YOUR_CALL_TO_ACTION",
+      "promo_text": "YOUR_PROMO_TEXT",
+      "promo_link": "https://example.com",
+      "hashtags": []
+    }
+  },
+  "competitors": {
+    "default_queries": [
+      "момент из фильма",
+      "отрывок из фильма HD",
+      "лучший момент из фильма",
+      "крутой момент кино",
+      "момент фильма шортс",
+      "эпичный момент кино"
+    ],
+    "sample_channels": [],
+    "min_views_threshold": 5000
+  },
+  "telegram": {
+    "enabled": false,
+    "bot_token": "YOUR_TELEGRAM_BOT_TOKEN",
+    "chat_id": "YOUR_TELEGRAM_CHAT_ID",
+    "allowed_user_ids": []
+  },
+  "youtube_api": {
+    "enabled": false,
+    "client_secrets_file": "client_secret.json"
+  }
+}
