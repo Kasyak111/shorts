@@ -312,7 +312,7 @@ function renderCuesList() {
           <span class="cue-num">#${index + 1}</span>
           <span class="cue-time-text" id="timeBadge_${cue.id}">[${formatAssTime(cue.start)} - ${formatAssTime(cue.end)}] (${dur}с)</span>
         </div>
-        <button class="cue-play-btn" data-action="play" data-start="${cue.start}">▶ Слушать</button>
+        <button class="cue-play-btn" data-action="play" data-start="${escapeHtml(cue.text)}">▶ Слушать</button>
       </div>
       <textarea class="cue-text-input" rows="2" data-id="${cue.id}">${cue.text}</textarea>
       <div class="cue-timing-controls">
@@ -566,8 +566,8 @@ async function showClipsModal() {
         const item = document.createElement("div");
         item.className = "clip-item-card";
         item.innerHTML = `
-          <div class="clip-item-title">${c.title || c.id}</div>
-          <div class="clip-item-sub">🍿 Фильм: ${c.film || 'Кино'} • Код: ${c.code || '777'}</div>
+          ${escapeHtml(c.title || c.id)}
+          <div class="clip-item-sub">🍿 Фильм: ${escapeHtml(c.film || 'Кино')} • Код: ${escapeHtml(c.code || '777')}</div>
         `;
         item.addEventListener("click", () => {
           hideClipsModal();
